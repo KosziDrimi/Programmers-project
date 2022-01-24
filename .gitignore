@@ -4,5 +4,7 @@
 *.pyo
 env/
 env*
-
-
+.coverage
+*cov/
+*.sqlite3
+.idea/
