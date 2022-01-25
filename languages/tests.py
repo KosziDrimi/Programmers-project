@@ -1,7 +1,7 @@
 from django.test import TestCase, SimpleTestCase
 from django.urls import reverse, resolve 
 
-from .views import index, add, show
+from .views import index, add, show, update
 from .models import Programmer
 from .forms import ProgrammerForm, LanguageForm
 
@@ -26,6 +26,10 @@ class TestURLs(SimpleTestCase):
     def test_show_url_resolves(self):
         url = reverse('show')
         self.assertEqual(resolve(url).func, show)
+
+    def test_update_url_resolves(self):
+        url = reverse('update', kwargs={'pk': 1})
+        self.assertEqual(resolve(url).func, update)
         
 
 class TestModel(TestCase):
@@ -49,6 +53,15 @@ class TestViews(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'languages/show_form.html')
+
+    def test_update_view(self):
+        Programmer.objects.create(name='Anthony', surname='Pretty', email='anthony@pretty.com',
+                                  position='programmer', c_plus_plus_level=0, c_level=0, rust_level=0,
+                                  python_level=5, java_level=3)
+        url = reverse('update', kwargs={'pk': 1})
+        response = self.client.get(url, {'id': 1})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'languages/update_form.html')
 
 
 class TestProgrammerForm(TestCase):
@@ -77,7 +90,7 @@ class TestProgrammerForm(TestCase):
         form = ProgrammerForm(data=data)
         self.assertFalse(form.is_valid())
 
-    def test_invalid_programmer_form_level_over_10(self):
+    def test_invalid_programmer_form_level_over_6(self):
         pro = Programmer.objects.create(name='Anthony', surname='Pretty',
                                         email='anthony@pretty.com', position='programmer',
                                         c_plus_plus_level=0, c_level=11, rust_level=0,
