@@ -11,7 +11,6 @@ def index(request):
 
 
 def add(request):
-    
     if request.method == 'POST':
         form = ProgrammerForm(request.POST)
     
@@ -33,7 +32,6 @@ def add(request):
 
 
 def show(request):
-
     if request.method == 'POST':
         form = LanguageForm(request.POST)
 
@@ -51,3 +49,20 @@ def show(request):
 
     context = {'form': form}
     return render(request, 'languages/show_form.html', context)
+
+
+def update(request, pk):
+    programmer = Programmer.objects.get(id=pk)
+    form = ProgrammerForm(instance=programmer)
+
+    if request.method == 'POST':
+        form = ProgrammerForm(request.POST, instance=programmer)
+
+        if form.is_valid():
+            form.save()
+            messages.warning(request, 'The entry has been updated.')
+            context = {'languages': [programmer]}
+            return render(request, 'languages/result.html', context)
+
+    context = {'form': form}
+    return render(request, 'languages/update_form.html', context)
