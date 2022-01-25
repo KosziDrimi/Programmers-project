@@ -14,17 +14,18 @@
 
       <h4>Search result:</h4>
       <br>
-      <table class='table' style="max-width: 60rem;">
+      <table class="table">
         <tr>
-          <th> Name </th>
-          <th> Surname </th>
-          <th> Email </th>
-          <th> Position </th>
-          <th> C++ level </th>
-          <th> C level </th>
-          <th> Rust level </th>
-          <th> Python level </th>
-          <th> Java level </th>
+          <th>Name</th>
+          <th>Surname</th>
+          <th>Email</th>
+          <th>Position</th>
+          <th>C++</th>
+          <th>C</th>
+          <th>Rust</th>
+          <th>Python</th>
+          <th>Java</th>
+          <th></th>
         </tr>
 
         {% for l in languages %}
@@ -38,11 +39,12 @@
             <td>{{ l.rust_level }}</td>
             <td>{{ l.python_level }}</td>
             <td>{{ l.java_level }}</td>
+            <td><a href="{% url 'update' l.id %}" class="btn btn-success btn-sm">Edit</a></td>
           </tr>
         {% endfor %}
       </table>
       <br>
-      <a href = "{% url 'logout' %}" class="btn btn-success">Logout</a>
+      <a href = "{% url 'index' %}" class="btn btn-success">Home</a>
 
     </div>
 
